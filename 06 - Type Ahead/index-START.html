@@ -21,6 +21,9 @@ fetch(endpoint)
 .then((data) => data.json())
 .then((city) => cities.push(...city) )
 
+cities.map((element,index,array) => {
+  console.log(element);
+})
 
 function findMatches(wordtomatch,cities) {
   cities.filter((place) => {
