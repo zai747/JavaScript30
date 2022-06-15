@@ -21,12 +21,10 @@ fetch(endpoint)
 .then((data) => data.json())
 .then((city) => cities.push(...city) )
 
-cities.map((element,index,array) => {
-  console.log(element);
-})
+console.log(cities);
 
 function findMatches(wordtomatch,cities) {
-  cities.filter((place) => {
+  return cities.filter((place) => {
     const regex = new RegExp(wordtomatch, 'gi');
     return place.city.match(regex) || place.state.match(regex)
   });
@@ -35,13 +33,26 @@ function findMatches(wordtomatch,cities) {
 
 function displayMatches() {
   const matchArray = findMatches(this.value,cities)
-  console.log(matchArray);
+  const html = matchArray.map(place => {
+    const regex = new RegExp(this.value,'gi')
+       
+    var cityname = place.city.replace(regex,`<span class="hl"> ${this.value} </span>`)
+    var statename = place.state.replace(regex,`<span class="hl"> ${this.value} </span>`)
+    
+  return `
+  <li> 
+    <span class="name">${cityname},${statename}</span>
+    <span class="population">${place.population} </span>
+  </li>
+  `
+}).join(' ')
+ suggestions.innerHTML = html;
 }
 
 const searchInput = document.querySelector('.search')
 const suggestions = document.querySelector('.suggestions')
 
-searchInput.addEventListener('change', displayMatches);
+searchInput.addEventListener('keyup', displayMatches);
 
 </script>
 </body>
